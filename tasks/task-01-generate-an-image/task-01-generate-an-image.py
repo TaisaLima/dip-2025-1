@@ -16,7 +16,8 @@ def generate_image(seed, width, height, mean, std):
         image (numpy.ndarray): The generated image.
     """
     ### START CODE HERE ###
-    ### TODO
+    np.random.seed(seed)
+    image = np.random.normal(loc=mean, scale=std, size=(height, width))
     ### END CODE HERE ###
     return image
 
@@ -39,6 +40,11 @@ if __name__ == "__main__":
 
     assert (np.abs(image - test) < 0.0001).all()
     print("Test passed!")
+
+   # image_uint8 = np.clip(image, 0, 255).astype(np.uint8)
+   # cv2.imshow("Imagem com distribuição gaussiana", image_uint8)
+   # cv2.waitKey(0)
+   # cv2.destroyAllWindows()
 
 
 
