@@ -32,17 +32,25 @@ def load_image_from_url(url: str, flags: int = cv.IMREAD_COLOR) -> np.ndarray:
     Raises:
     - RuntimeError: If the image cannot be loaded or decoded.
     """
+    
     try:
-        ### START CODE HERE ###
-        ### TODO
-        image = None
-        ### END CODE HERE ###
+        with urllib.request.urlopen(url) as response:
+            data = response.read()
+
+        np_arr = np.frombuffer(data, np.uint8)
+
+        image = cv.imdecode(np_arr, flags)
+
+        if image is None:
+            raise RuntimeError("cv.imdecode retornou None (formato não suportado ou dados corrompidos).")
+
+        if flags == cv.IMREAD_GRAYSCALE:
+            image = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
 
         return image
 
     except Exception as e:
         raise RuntimeError(f"[ERROR] Could not load image from URL '{url}': {e}") from e
-
 
 def main():
     parser = argparse.ArgumentParser(description="Load and display an image from a URL.")
