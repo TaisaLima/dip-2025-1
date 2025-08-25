@@ -24,7 +24,10 @@ def linear_combination(i1: np.ndarray, i2: np.ndarray, a1: float, a2: float) -> 
 
     ### START CODE HERE ###
     ### TODO
-    i_out = None
+    if i1.shape != i2.shape:
+        raise ValueError("Input images must have the same dimensions.")
+
+    i_out = cv.addWeighted(i1, a1, i2, a2, 0)
     ### END CODE HERE ###
 
     return i_out
@@ -83,4 +86,5 @@ if __name__ == "__main__":
         if key == ord('q'):
             break
 
+    cv.waitKey(0)
     cv.destroyAllWindows()
