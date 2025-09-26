@@ -29,5 +29,28 @@ import numpy as np
 import scikitimage as ski
 
 def match_histograms_rgb(source_img: np.ndarray, reference_img: np.ndarray) -> np.ndarray:
-    # Your implementation here
-    pass
+
+    matched_img = np.zeros_like(source_img)
+
+    for ch in range(3):
+        src_channel = source_img[:, :, ch].ravel()
+        ref_channel = reference_img[:, :, ch].ravel()
+
+
+        src_hist, bins = np.histogram(src_channel, bins=256, range=(0, 256), density=True)
+        ref_hist, _    = np.histogram(ref_channel, bins=256, range=(0, 256), density=True)
+
+
+        src_cdf = np.cumsum(src_hist)
+        ref_cdf = np.cumsum(ref_hist)
+
+        
+        src_cdf = src_cdf / src_cdf[-1]
+        ref_cdf = ref_cdf / ref_cdf[-1]
+
+        mapping = np.interp(src_cdf, ref_cdf, np.arange(256))
+
+        matched_channel = np.interp(src_channel, np.arange(256), mapping)
+        matched_img[:, :, ch] = matched_channel.reshape(source_img.shape[:2])
+        
+  return matched_img.astype(np.uint8)
