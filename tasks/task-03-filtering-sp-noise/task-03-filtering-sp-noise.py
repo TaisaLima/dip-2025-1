@@ -20,7 +20,6 @@ def add_salt_and_pepper_noise(image, salt_prob=0.02, pepper_prob=0.02):
 def remove_salt_and_pepper_noise(image):
     return cv.medianBlur(image, 3)
 
-# ---------- MAIN ----------
 if __name__ == "__main__":
     # Lê a imagem
     img = cv.imread("imagem.png", cv.IMREAD_GRAYSCALE)
